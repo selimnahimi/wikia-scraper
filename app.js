@@ -2,7 +2,6 @@
 
 const cheerio = require('cheerio')
 	, fs = require('fs')
-	, path = require('path')
 	, htmlToText = require('html-to-text')
 	, request = require('request-promise-native')
 	, setTitle = require('console-title')
@@ -23,8 +22,7 @@ fs.stat(textFolder, (err, stat) => {
 let pageQueue = new Set([])
 	, imgQueue = []
 	, workers = []
-	, queuePosition = 0
-	, queueFinished = new Set([]);
+	, queuePosition = 0;
 
 /**
  * This function searches for links on a wiki article.
@@ -63,20 +61,14 @@ class Worker {
 function checkQueue() {
 	let jobsToAdd = 10 - workers.length;
 	for (let i = 0; i < workers.length; i++) {
-		for (let item in Object.values(workers[i])) {
-			//console.log(item)
-		}
 		if (!workers[i].done) continue;
-		//console.log('Worker finished');
 		workers[i] = null;
 		workers.splice(i, 1);
 		jobsToAdd++;
 	}
 
 	for (let i = 0; queuePosition < pageQueue.size && jobsToAdd > 0; queuePosition++) {
-		//console.log('Adding worker');
 		let url = [...pageQueue][queuePosition];
-
 		workers.push(createJob(url));
 		jobsToAdd--;
 	}
