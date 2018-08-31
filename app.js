@@ -78,7 +78,6 @@ function checkQueue() {
 		let url = [...pageQueue][queuePosition];
 
 		workers.push(createJob(url));
-		pageQueue.delete(url);
 		jobsToAdd--;
 	}
 
