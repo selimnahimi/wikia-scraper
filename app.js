@@ -62,6 +62,7 @@ function checkQueue() {
 	let jobsToAdd = 10 - workers.length;
 	for (let i = 0; i < workers.length; i++) {
 		if (!workers[i].done) continue;
+		workers[i] = null;
 		workers.splice(i, 1);
 		jobsToAdd++;
 	}
